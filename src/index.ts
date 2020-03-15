@@ -19,8 +19,9 @@ app.post("/email", async (req, res) => {
   const apiKey = process.env.MAILCHIMP_API_KEY;
   const listId = process.env.MAILCHIMP_LIST_ID;
   const url = `https://us19.api.mailchimp.com/3.0/lists/${listId}/members/`;
+  const sendUrl = `https://us19.api.mailchimp.com/3.0/campaigns/${process.env.MAILCHIMP_CAMPAIGN_ID}/actions/send/`
 
-  const response = await fetch(url, {
+  const subscribeBody = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -29,9 +30,23 @@ app.post("/email", async (req, res) => {
     },
     body: JSON.stringify({
       email_address: req.body.email,
-      status: "subscribed"
+      status: "subscribed",
     })
-  });
+  }
+
+  const sendBody = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Basic ${apiKey}`
+    },
+    body: JSON.stringify({
+      title: "foobar"
+    })
+  };
+
+  const response = await fetch(sendUrl, sendBody);
 
   const data = await response.json();
 
