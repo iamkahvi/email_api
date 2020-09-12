@@ -22,7 +22,7 @@
     "md5": "^2.2.1",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.4",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "sqlstring": "^2.3.1",
     "typescript": "^3.8.3"
   }
