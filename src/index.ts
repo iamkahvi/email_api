@@ -20,17 +20,18 @@ app.post("/email", async (req, res) => {
   const listId = process.env.MAILCHIMP_LIST_ID;
   const campaignId = process.env.MALICHIMP_CAMPAIGN_ID;
   const subscribeURL = `https://us19.api.mailchimp.com/3.0/lists/${listId}/members/`;
+  // Should only allow requests from https://kahvipatel.com
   const subscribeBody = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
-      Authorization: `Basic ${apiKey}`
+      Authorization: `Basic ${apiKey}`,
     },
     body: JSON.stringify({
       email_address: req.body.email,
-      status: "subscribed"
-    })
+      status: "subscribed",
+    }),
   };
 
   const sendURL = `https://us19.api.mailchimp.com/3.0/campaigns/${campaignId}/actions/send/`;
@@ -39,11 +40,11 @@ app.post("/email", async (req, res) => {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
-      Authorization: `Basic ${apiKey}`
+      Authorization: `Basic ${apiKey}`,
     },
     body: JSON.stringify({
-      title: "foobar"
-    })
+      title: "foobar",
+    }),
   };
 
   const response = await fetch(subscribeURL, subscribeBody);
@@ -56,7 +57,7 @@ app.post("/email", async (req, res) => {
     res.status(200).send(JSON.stringify({ title: "subscription successful!" }));
   } else {
     res
-      .status(500)
+      .status(data.status)
       .send(
         JSON.stringify({ title: data.title, description: data.description })
       );
