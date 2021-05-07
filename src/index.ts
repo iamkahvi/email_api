@@ -5,10 +5,10 @@ require("dotenv").config();
 
 const app = express();
 
-const port = 3000;
+const port = process.env.PORT;
 app.use(
   cors({
-    origin: ["https://kahvipatel.com", "http://kahvipatel.com"],
+    origin: ["https://kahvipatel.com", "https://staging.kahvipatel.com"],
   })
 );
 app.use(express.json());
@@ -43,12 +43,12 @@ app.post("/email", async (req, res) => {
   console.log(data);
 
   if (data.status === "subscribed") {
-    res.status(200).send(JSON.stringify({ title: "subscription successful!" }));
+    res.status(200).send(JSON.stringify({ title: "subscription successful!", detail: "" }));
   } else {
     res
       .status(data.status)
       .send(
-        JSON.stringify({ title: data.title, description: data.description })
+        JSON.stringify({ title: data.title, description: data?.detail ?? "" })
       );
   }
 });
