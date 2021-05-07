@@ -1,7 +1,5 @@
 import * as express from "express";
 import * as cors from "cors";
-import * as bodyParser from "body-parser";
-const md5 = require("md5");
 const fetch = require("node-fetch");
 require("dotenv").config();
 
