@@ -8,8 +8,12 @@ require("dotenv").config();
 const app = express();
 
 const port = 3000;
-app.use(cors());
-app.use(bodyParser.json());
+app.use(
+  cors({
+    origin: ["https://kahvipatel.com", "http://kahvipatel.com"],
+  })
+);
+app.use(express.json());
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
@@ -18,8 +22,8 @@ app.get("/", (req, res) => res.send("Hello World!"));
 app.post("/email", async (req, res) => {
   const apiKey = process.env.MAILCHIMP_API_KEY;
   const listId = process.env.MAILCHIMP_LIST_ID;
-  const campaignId = process.env.MALICHIMP_CAMPAIGN_ID;
   const subscribeURL = `https://us19.api.mailchimp.com/3.0/lists/${listId}/members/`;
+
   // Should only allow requests from https://kahvipatel.com
   const subscribeBody = {
     method: "POST",
@@ -31,19 +35,6 @@ app.post("/email", async (req, res) => {
     body: JSON.stringify({
       email_address: req.body.email,
       status: "subscribed",
-    }),
-  };
-
-  const sendURL = `https://us19.api.mailchimp.com/3.0/campaigns/${campaignId}/actions/send/`;
-  const sendBody = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      Authorization: `Basic ${apiKey}`,
-    },
-    body: JSON.stringify({
-      title: "foobar",
     }),
   };
 
